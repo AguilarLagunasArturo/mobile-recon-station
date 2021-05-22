@@ -1,0 +1,82 @@
+<html>
+   <head>
+      <meta charset="utf-8">
+      <script></script>
+      <style></style>
+      <title>Mobile station controller</title>
+   </head>
+   <body>
+      <div class="center">
+         <iframe
+            width="800" height="400"
+            src="https://www.youtube.com/embed/sxbg4GNyN58"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+         </iframe>
+      </div>
+      <div class="center">
+         <div class="desktop-controller center">
+            <button
+               type="button"
+               class="button-long"
+               name="m-f"
+               onmousedown="send('1');"
+               onmouseup="send('0');">
+            </button><br>
+            <button
+               type="button"
+               class="button-normal"
+               name="m-b"
+               onmousedown="send('2');"
+               onmouseup="send('0');">
+            </button>
+            <button
+               type="button"
+               class="button-normal"
+               name="m-r"
+               onmousedown="send('3');"
+               onmouseup="send('0');">
+            </button><br>
+            <button
+               type="button"
+               class="button-long"
+               name="m-l"
+               onmousedown="send('4');"
+               onmouseup="send('0');">
+            </button>
+         </div>
+         <div class="mobile-controller center">
+            <button
+               type="button"
+               class="button-long"
+               name="d-f"
+               ontouchstart="send('1');"
+               ontouchend="send('0');">
+            </button><br>
+            <button
+               type="button"
+               class="button-normal"
+               name="d-b"
+               ontouchstart="send('2');"
+               ontouchend="send('0');">
+            </button>
+            <button
+               type="button"
+               class="button-normal"
+               name="d-r"
+               ontouchstart="send('3');"
+               ontouchend="send('0');">
+            </button><br>
+            <button
+               type="button"
+               class="button-long"
+               name="d-l"
+               ontouchstart="send('4');"
+               ontouchend="send('0');">
+            </button>
+         </div>
+      </div>
+   </body>
+</html>

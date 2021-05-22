@@ -1,0 +1,28 @@
+.center{
+   margin:0px auto;
+   display: table;
+ }
+ @media screen and (max-width: 1000px) {
+   .mobile-controller{ display: block; }
+   .desktop-controller{ display: none; }
+   .button-long{
+     padding: 128px 400px;
+     border-radius: 128px;
+   }
+   .button-normal{
+     padding: 164px 200px;
+     border-radius: 128px;
+   }
+ }
+ @media screen and (min-width: 1000px) {
+   .mobile-controller{ display: none; }
+   .desktop-controller{ display: block; position: relative;}
+   .button-long{
+     padding: 64px 128px;
+     border-radius: 60px;
+   }
+   .button-normal{
+     padding: 64px;
+     border-radius: 60px;
+   }
+ }
