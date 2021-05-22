@@ -1,0 +1,32 @@
+.center{
+  margin:0px auto;
+  display: table;
+}
+@media screen and (max-width: 40em) {
+  .mobile-controller{ display: block; }
+  .desktop-controller{ display: none; }
+  .button-long{
+    padding: 32px 64px;
+    border-radius: 60px;
+    margin: 1px;
+  }
+  .button-normal{
+    padding: 32px;
+    border-radius: 60px;
+    margin: 1px;
+  }
+}
+@media screen and (min-width: 40em) {
+  .mobile-controller{ display: none; }
+  .desktop-controller{ display: block; position: relative;}
+  .button-long{
+    padding: 64px 128px;
+    border-radius: 60px;
+    margin: 1px;
+  }
+  .button-normal{
+    padding: 64px;
+    border-radius: 60px;
+    margin: 1px;
+  }
+}
