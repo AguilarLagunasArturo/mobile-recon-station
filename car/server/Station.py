@@ -13,6 +13,7 @@ class Station:
         self.server.bind( (self.SERVER, self.PORT) )
 
         self.current_state = 0
+        self.running = True
 
         RESPONSE_BEGIN = 'HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\n'
         with open(html_path, 'r') as f:
@@ -37,20 +38,24 @@ class Station:
                 #print('[{}] {}'.format(addr, message))
                 if len(message.split('\n')[-1]) > 0:
                     self.current_state = int(message.split('\n')[-1][-1])
-                    print('[{}] {}'.format(addr, current_state))
+                    print('[{}] {}'.format(addr, self.current_state))
                 else:
                     conn.send(self.RESPONSE)
                 break
         conn.close()
 
-    def start(self):
+    def __handle_connections(self):
         print('[STARTING] {} at port {}'.format(self.SERVER, self.PORT))
         self.server.listen()
-        while True:
+        while self.running:
             conn, addr = self.server.accept() # blocking until connection accepted
             t = threading.Thread(target=self.__handle_client, args=(conn, addr))
             t.start()
             #print('[CONNECTIONS] {}'.format(threading.activeCount() -1))
 
-mobile_station = Station('joystick/index.html', 'joystick/logic.js', 'joystick/look.css', '192.168.1.80', 5050)
-mobile_station.start()
+    def start(self):
+        main_t = threading.Thread(target=self.__handle_connections, args=())
+        main_t.start()
+
+    def stop(self):
+        self.running = False

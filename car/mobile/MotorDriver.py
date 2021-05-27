@@ -18,9 +18,9 @@ class MotorDriver:
 		(1, 0, 0, 1)	# 4: left
 	)
 
-	def __init__(motor_pins):
+	def __init__(self, motor_pins):
 		self.motor_pins = motor_pins
-		# GPIO.setmode(GPIO.BOARD)
+		GPIO.setmode(GPIO.BOARD)
 		for mp in self.motor_pins:
 			GPIO.setup(mp, GPIO.OUT)
 			GPIO.output(mp, GPIO.LOW)
@@ -39,26 +39,20 @@ class MotorDriver:
 				print('right')
 			elif self.current_state == MotorDriver.LEFT:
 				print('left')
-			else
+			else:
 				print('DEBUG RAISE EXCEPTION')
 			for mp,s in zip(self.motor_pins, MotorDriver.STATES[new_state]):
 				GPIO.output(mp, s)
-
-	@classmethod
-	def warmup(cls, sleep_time=1):
+	def warmup(self, sleep_time=1):
 		sleep(sleep_time)
-		move(cls.STOP)
+		self.move(MotorDriver.STOP)
 		sleep(sleep_time)
-		move(cls.FORWARD)
+		self.move(MotorDriver.FORWARD)
 		sleep(sleep_time)
-		move(cls.BACKWARD)
+		self.move(MotorDriver.BACKWARD)
 		sleep(sleep_time)
-		move(cls.RIGHT)
+		self.move(MotorDriver.RIGHT)
 		sleep(sleep_time)
-		move(cls.LEFT)
+		self.move(MotorDriver.LEFT)
 		sleep(sleep_time)
-		move(cls.STOP)
-
-motor_pins = (11, 13, 15, 16) #r1, r2, l1, l2
-my_wheels = MotorDriver(motor_pins)
-my_wheels.warmup()
+		self.move(MotorDriver.STOP)
