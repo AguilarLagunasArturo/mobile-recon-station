@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 ''' Modules '''
 from cv_recon.picam import PiCamStream
 from cv_recon import Colorspace

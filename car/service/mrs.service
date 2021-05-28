@@ -3,8 +3,9 @@ Description=Mobile Recon Station
 
 [Service]
 Type=simple
-WorkingDirectory=/home/aal/Github/mobile-recon-station/car
-ExecStart=/home/aal/Github/mobile-recon-station/car/./car_service.py
+User=pi
+WorkingDirectory=/home/pi/Github/mobile-recon-station/car
+ExecStart=/home/pi/Github/mobile-recon-station/car/./main.py
 TimeoutSec=45s
 Restart=always
 RestartSec=20s
