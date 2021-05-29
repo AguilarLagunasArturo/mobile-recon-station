@@ -12,7 +12,6 @@ html = 'server/joystick/index.html'
 js = 'server/joystick/logic.js'
 css = 'server/joystick/look.css'
 
-
 ''' Video from OpenCV '''
 frame = []
 update = False

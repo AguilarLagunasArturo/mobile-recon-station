@@ -2,6 +2,11 @@
    margin:0px auto;
    display: table;
  }
+ .button-mode{
+   padding: 8px 8px;
+   margin: 8px 16px;
+   font-size: 32px;
+ }
  @media screen and (max-width: 1000px) {
    .mobile-controller{ display: block; }
    .desktop-controller{ display: none; }
