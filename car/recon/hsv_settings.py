@@ -37,7 +37,7 @@ while True:
 
 	frame_grid = cv_tools.grid(frame, (2, 3),[              # generate grid
 		frame_hsv, frame_out, colorspace.im_contours,
-		colorspace.im_cut, colorspace.im_mask, colorspace.im_edges], 1)
+		colorspace.im_cut, colorspace.im_mask, colorspace.im_edges], 0.6)
 
 	cv.imshow('grid', frame_grid)                           # show grid
 

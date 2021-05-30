@@ -6,20 +6,64 @@ from cv_recon import Colorspace
 from cv_recon import cv_tools
 from mobile.MotorDriver import MotorDriver
 from server.Station import Station
+from flask import Flask, render_template_string, Response
 import numpy as np
 import cv2 as cv
+import threading
 
 from RPi import GPIO
 from time import sleep
+
+''' Cnt '''
+host = '192.168.1.68'
 
 ''' Station '''
 mobile_station = Station(
 	'server/joystick/index.html',
 	'server/joystick/logic.js',
 	'server/joystick/look.css',
-	'192.168.1.82', 3141
+	host, 3141
 )
 mobile_station.start()
+
+''' Video Streaming '''
+frame = []
+update = False
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+	return render_template_string('''<html>
+	<head>
+		<title>Stream</title>
+	</head>
+	<body>
+		<img src="{{ url_for('stream') }}" width="100%">
+	</body>
+ 	</html>''')
+
+@app.route('/stream')
+def stream():
+	return Response(get_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+def get_frames():
+	global frame
+	global update
+	while True:
+		if update:
+			sleep(0.1)
+			ret, buffer = cv.imencode('.jpg', frame)
+			frame = buffer.tobytes()
+			yield (b'--frame\r\n'
+				 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+def start_flask():
+	app.run(debug=False, host=host, port=6283)
+
+t_flask = threading.Thread(target=start_flask, args=())
+t_flask.start()
+
 ''' Raspberry stuff '''
 motor_pins = (11, 13, 15, 16) #r1, r2, l1, l2
 # help(GPIO)
@@ -33,28 +77,28 @@ x_th = 0.5
 MANUAL_MODE = 0
 RECON_MODE = 1
 MODE = MANUAL_MODE
+#MODE = RECON_MODE
 
 ''' Cam stuff '''
 res = (320, 240)
 fps = 32
 
 if MODE == RECON_MODE:
-	# initialize the camera
-	cam_stream = PiCamStream(res, fps)
-	cam_stream.start()
-
 	# color recon obj
 	colorspace = Colorspace('last.log')
 	#colorspace.createSliders()
 
-	# warmup camera
-	sleep(2.0)
+# initialize the camera
+cam_stream = PiCamStream(res, fps)
+cam_stream.start()
+# warmup camera
+sleep(2.0)
 
 while True:
+	frame = cam_stream.current_frame
 	if MODE == RECON_MODE:
 		''' RECON_MODE '''
 		#colorspace.updateHSV()
-		frame = cam_stream.current_frame
 		frame_blur = cv.GaussianBlur(frame, (9, 9), 150)                # smoothes the noise
 		frame_hsv = cv.cvtColor(frame_blur, cv.COLOR_BGR2HSV)           # convert BGR to HSV
 
@@ -87,9 +131,12 @@ while True:
 			break
 	elif MODE == MANUAL_MODE:
 		''' MANUAL_MODE '''
-		wheels.move(mobile_station.current_state)
+		cs = mobile_station.current_state
+		if cs >= 0 and cs <= 4:
+			wheels.move(cs)
 		# TODO:
 		# - CONTROL DIR FROM WIFI OR BT
+	update = True
 
 wheels.move(MotorDriver.STOP)
 mobile_station.stop()

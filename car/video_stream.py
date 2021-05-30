@@ -3,6 +3,7 @@ import cv2 as cv
 import numpy as np
 from time import sleep
 from cv_recon.cv_tools import grid
+from cv_recon.picam import PiCamStream
 from server.Station import Station
 from flask import Flask, render_template_string, Response
 
@@ -15,7 +16,24 @@ css = 'server/joystick/look.css'
 ''' Video from OpenCV '''
 frame = []
 update = False
+
+''' Cam stuff '''
+res = (320, 240)
+fps = 32
+
+sleep(2.0)
+
 def using_camera():
+	cam_stream = PiCamStream(res, fps)
+	cam_stream.start()
+	global frame
+	global update
+	while True:
+		update = False
+		frame = cam_stream.current_frame
+		update = True
+
+def using_camera_old():
 	cap = cv.VideoCapture(0)
 	global frame
 	global update
@@ -54,7 +72,7 @@ def get_frames():
 	global update
 	while True:
 		if update:
-			#sleep(0.1)
+			sleep(0.1)
 			ret, buffer = cv.imencode('.jpg', frame)
 			frame = buffer.tobytes()
 			yield (b'--frame\r\n'
@@ -75,9 +93,9 @@ def gen_frames():
 if __name__ == "__main__":
 	t = threading.Thread(target=using_camera, args=())
 	t.start()
-	stat1 = Station(html, js, css, '192.168.1.80', 8080)
+	stat1 = Station(html, js, css, '192.168.1.82', 8080)
 	stat1.start()
-	app.run(debug=False, host='192.168.1.80', port=9090)
+	app.run(debug=False, host='192.168.1.82', port=9090)
 
 #stat2 = Station(html, js, css, '192.168.1.80', 4050)
 #stat2.start()
