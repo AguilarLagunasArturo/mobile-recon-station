@@ -3,7 +3,7 @@ import cv2 as cv
 import numpy as np
 from time import sleep
 from cv_recon.cv_tools import grid
-from cv_recon.picam import PiCamStream
+#from cv_recon.picam import PiCamStream
 from server.Station import Station
 from flask import Flask, render_template_string, Response
 
@@ -91,11 +91,11 @@ def gen_frames():
 				   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
 if __name__ == "__main__":
-	t = threading.Thread(target=using_camera, args=())
-	t.start()
-	stat1 = Station(html, js, css, '192.168.1.82', 8080)
+	#t = threading.Thread(target=using_camera, args=())
+	#t.start()
+	stat1 = Station(html, js, css, Station.get_local_ip(), 3141)
 	stat1.start()
-	app.run(debug=False, host='192.168.1.82', port=9090)
+	#app.run(debug=False, host='192.168.1.82', port=9090)
 
 #stat2 = Station(html, js, css, '192.168.1.80', 4050)
 #stat2.start()
