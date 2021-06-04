@@ -15,21 +15,22 @@ from RPi import GPIO
 from time import sleep
 
 ''' Cnt '''
-host = '192.168.1.68'
+HOST = Station.get_local_ip()
+VIDEO_PORT = 6282
+JOYSTICK_PORT = 3141
 
 ''' Station '''
 mobile_station = Station(
 	'server/joystick/index.html',
 	'server/joystick/logic.js',
 	'server/joystick/look.css',
-	host, 3141
+	HOST, JOYSTICK_PORT
 )
 mobile_station.start()
 
 ''' Video Streaming '''
 frame = []
 update = False
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -59,7 +60,7 @@ def get_frames():
 				 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 def start_flask():
-	app.run(debug=False, host=host, port=6283)
+	app.run(debug=False, host=HOST, port=VIDEO_PORT)
 
 t_flask = threading.Thread(target=start_flask, args=())
 t_flask.start()

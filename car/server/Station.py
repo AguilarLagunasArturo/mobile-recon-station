@@ -53,7 +53,7 @@ class Station:
 		conn.close()
 
 	def __handle_connections(self):
-		print('[STARTING] {} at port {}'.format(self.HOST, self.PORT))
+		print('[STARTING] {}:{}'.format(self.HOST, self.PORT))
 		self.server.listen()
 		while self.running:
 			conn, addr = self.server.accept() # blocking until connection accepted
