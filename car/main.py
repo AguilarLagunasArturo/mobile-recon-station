@@ -24,7 +24,7 @@ mobile_station = Station(
 	'server/joystick/index.html',
 	'server/joystick/logic.js',
 	'server/joystick/look.css',
-	HOST, JOYSTICK_PORT
+	HOST, JOYSTICK_PORT, VIDEO_PORT
 )
 mobile_station.start()
 

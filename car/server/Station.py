@@ -2,9 +2,10 @@ import socket
 import threading
 class Station:
 
-	def __init__(self, html_path, js_path, css_path, ip=socket.gethostbyname(socket.gethostname()), port=3141, format='utf-8'):
+	def __init__(self, html_path, js_path, css_path, ip=socket.gethostbyname(socket.gethostname()), port=3141, video_port=6282, format='utf-8'):
 		self.HOST = ip
 		self.PORT = port
+		self.VIDEO_PORT = video_port
 		self.FORMAT = format
 
 		# Create server to stream data through the internet
@@ -18,8 +19,10 @@ class Station:
 		RESPONSE_BEGIN = 'HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\n'
 		with open(html_path, 'r') as f:
 			html = f.read().split('\n')
+			html[11] = 'src="http://{}:{}"'.format(self.HOST, self.VIDEO_PORT)
 			html_begin = '\n'.join(html[0:3])
 			html_end = '\n'.join(html[5:])
+			print(html_end)
 		with open(js_path, 'r') as f:
 			js = f.read()
 			js = '<script>\n{}</script>'.format(js)
