@@ -1,6 +1,8 @@
 // global vars
 var abs_pos_x, abs_pos_y, step, step_amt, abs_rot, rot, rot_amt, toggle;
 var rotating, translating;
+var view, V2D, V3D;
+
 function setup() {
 	step = 0;
 	step_amt = 5;
@@ -14,6 +16,10 @@ function setup() {
 	rotating = false;
 	translating = false;
 
+	V2D = 0;
+	V3D = 1;
+	view = V3D;
+
 	var c = createCanvas(
 		screen.availWidth * (1-0.2),
 		screen.availHeight * (1-0.2),
@@ -25,6 +31,11 @@ function setup() {
 function draw() {
 	background(100, 200, 200);
 
+	if (view == V2D){
+		rotateX(-HALF_PI);
+	} else if (view == V3D){
+		translate(0, 100, 0);
+	}
 	push();
 	translate(0, 40, 0);
 	box(width, 20, height);
@@ -43,7 +54,6 @@ function draw() {
 		rotateY(abs_rot);
 	}
 	box(80, 50, 100);
-
 }
 
 function keyPressed() {
