@@ -16,20 +16,20 @@ function setup() {
 	translating = false;
 
 	var c = createCanvas(
-		600,
-		400,
-		WEBGL
-	);
-	/*var c = createCanvas(
 		screen.availWidth * (1-0.2),
 		screen.availHeight * (1-0.2),
 		WEBGL
-	);*/
+	);
 	c.parent("canvas")
 }
 
 function draw() {
 	background(100, 200, 200);
+
+	push();
+	translate(0, 40, 0);
+	box(width, 20, height);
+	pop();
 
 	translate(abs_pos_x, 0, abs_pos_y);
 	if (rotating) {
@@ -44,6 +44,7 @@ function draw() {
 		rotateY(abs_rot);
 	}
 	box(80, 50, 100);
+
 }
 
 function keyPressed() {
@@ -51,24 +52,20 @@ function keyPressed() {
 		step = -step_amt;
 		passive = false;
 		translating = true;
-		console.log("up");
 	} else if (keyCode === DOWN_ARROW) {
 		step = step_amt;
 		passive = false;
 		translating = true;
-		console.log("down");
 	} else if (keyCode === RIGHT_ARROW) {
 		passive = true;
 		abs_rot -= rot_amt;
 		rot = -rot_amt;
 		rotating = true;
-		console.log("right");
 	} else if (keyCode === LEFT_ARROW) {
 		passive = true;
 		abs_rot += rot_amt;
 		rot = rot_amt;
 		rotating = true;
-		console.log("left");
 	}
 }
 
