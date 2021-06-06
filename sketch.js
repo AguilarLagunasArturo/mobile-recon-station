@@ -1,18 +1,22 @@
 // global vars
-var abs_pos_x, abs_pos_y, step, step_amt, rot, rot_amt, passive, static_rot, toggle;
+var abs_pos_x, abs_pos_y, step, step_amt, abs_rot, rot, rot_amt, toggle;
+var rotating, translating;
 function setup() {
 	abs_pos_x = 0;
 	abs_pos_y = 0;
+
 	step = 0;
 	step_amt = 5;
+
 	rot = 0;
 	rot_amt = PI/100;
-	passive = false;
-	static_rot = 0;
-	toggle = false;
+	abs_rot = 0;
+
+	rotating = false;
+	translating = false;
 
 	var c = createCanvas(
-		400,
+		600,
 		400,
 		WEBGL
 	);
@@ -26,61 +30,52 @@ function setup() {
 
 function draw() {
 	background(100, 200, 200);
-	// rotatey
-	// translate z
+
 	translate(abs_pos_x, 0, abs_pos_y);
-	if (passive) {
-		rotateY(rot);
-	} else {
-		rotateY(rot);
+	if (rotating) {
+		rotateY(abs_rot);
+		abs_rot += rot;
+	} else if (translating) {
+		rotateY(abs_rot);
 		translate(0, 0, step);
-		abs_pos_x = abs_pos_x + step * sin(static_rot);
-		abs_pos_y = abs_pos_y + step * cos(static_rot);
+		abs_pos_x = abs_pos_x + step * sin(abs_rot);
+		abs_pos_y = abs_pos_y + step * cos(abs_rot);
+	} else {
+		rotateY(abs_rot);
 	}
-	// passive = true;
 	box(80, 50, 100);
 }
 
 function keyPressed() {
 	if (keyCode === UP_ARROW) {
-		console.log("up");
 		step = -step_amt;
-		static_rot = rot;
 		passive = false;
+		translating = true;
+		console.log("up");
 	} else if (keyCode === DOWN_ARROW) {
-		console.log("down");
 		step = step_amt;
-		static_rot = rot;
 		passive = false;
+		translating = true;
+		console.log("down");
 	} else if (keyCode === RIGHT_ARROW) {
 		passive = true;
-		rot -= rot_amt;
+		abs_rot -= rot_amt;
+		rot = -rot_amt;
+		rotating = true;
 		console.log("right");
 	} else if (keyCode === LEFT_ARROW) {
 		passive = true;
-		rot += rot_amt;
+		abs_rot += rot_amt;
+		rot = rot_amt;
+		rotating = true;
 		console.log("left");
 	}
 }
 
 function keyReleased() {
-	if (keyCode === UP_ARROW) {
-		console.log("up-released");
-		step = -step_amt;
-		static_rot = rot;
-		passive = false;
-	} else if (keyCode === DOWN_ARROW) {
-		console.log("down-released");
-		step = step_amt;
-		static_rot = rot;
-		passive = false;
-	} else if (keyCode === RIGHT_ARROW) {
-		passive = true;
-		rot -= rot_amt;
-		console.log("right-released");
-	} else if (keyCode === LEFT_ARROW) {
-		passive = true;
-		rot += rot_amt;
-		console.log("left-released");
+	if (keyCode === UP_ARROW || keyCode === DOWN_ARROW) {
+		translating = false;
+	} else if (keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
+		rotating = false;
 	}
 }
