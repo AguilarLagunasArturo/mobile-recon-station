@@ -10,8 +10,8 @@ function setup() {
 function draw() {
 	background(100, 200, 200);
 	rotateX(frameCount * 0.01);
-  rotateY(frameCount * 0.01);
-  box(50);
+	rotateY(frameCount * 0.01);
+	box(50);
 }
 
 function keyPressed() {
