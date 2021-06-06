@@ -16,12 +16,12 @@ function draw() {
 
 function keyPressed() {
 	if (keyCode === UP_ARROW) {
-		console.log('up');
+		console.log("up");
 	} else if (keyCode === DOWN_ARROW) {
-		console.log('down');
+		console.log("down");
 	} else if (keyCode === RIGHT_ARROW) {
-		console.log('right');
+		console.log("right");
 	} else if (keyCode === LEFT_ARROW) {
-		console.log('left');
+		console.log("left");
 	}
 }
