@@ -2,15 +2,14 @@
 var abs_pos_x, abs_pos_y, step, step_amt, abs_rot, rot, rot_amt, toggle;
 var rotating, translating;
 function setup() {
+	step = 0;
+	step_amt = 5;
 	abs_pos_x = 0;
 	abs_pos_y = 0;
 
-	step = 0;
-	step_amt = 5;
-
+	abs_rot = 0;
 	rot = 0;
 	rot_amt = PI/100;
-	abs_rot = 0;
 
 	rotating = false;
 	translating = false;
