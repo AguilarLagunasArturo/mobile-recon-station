@@ -22,7 +22,6 @@ class Station:
 			html[11] = 'src="http://{}:{}"'.format(self.HOST, self.VIDEO_PORT)
 			html_begin = '\n'.join(html[0:3])
 			html_end = '\n'.join(html[5:])
-			print(html_end)
 		with open(js_path, 'r') as f:
 			js = f.read()
 			js = '<script>\n{}</script>'.format(js)
