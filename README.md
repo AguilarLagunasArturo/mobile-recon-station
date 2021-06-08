@@ -9,3 +9,4 @@ An average car.
 | numpy | pip install numpy |
 | cv_recon | pip install cv-recon |
 | flask | pip install Flask |
+| smbus | sudo apt install python3-smbus |
