@@ -34,7 +34,7 @@ def setup():
 def read_address(address):
 	h = bus.read_byte_data(ADRS, address)
 	l = bus.read_byte_data(ADRS, address + 1)
-	value = (h << 8) | low
+	value = (h << 8) | l
 	if value >= 0x8000: # value > 32768
 		return - ( (65535 - value) + 1 )
 		#return -(65535 - value) - 1
@@ -53,6 +53,7 @@ def get_gyro():
 	return gz
 
 setup()
+
 while True:
 	a = get_acc()
 	w = get_gyro()
