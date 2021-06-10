@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 ''' Modules '''
-from cv_recon.picam import PiCamStream
+from cv_recon.picam import PiCam
 from cv_recon import Colorspace
 from cv_recon import cv_tools
 from mobile.MotorDriver import MotorDriver
@@ -77,12 +77,13 @@ wheels = MotorDriver(motor_pins)
 x_th = 0.5
 MANUAL_MODE = 0
 RECON_MODE = 1
+
 MODE = MANUAL_MODE
 #MODE = RECON_MODE
 
 ''' Cam stuff '''
 res = (320, 240)
-fps = 32
+fps = 24
 
 if MODE == RECON_MODE:
 	# color recon obj
@@ -90,13 +91,13 @@ if MODE == RECON_MODE:
 	#colorspace.createSliders()
 
 # initialize the camera
-cam_stream = PiCamStream(res, fps)
-cam_stream.start()
+cam = PiCam(res, fps, contrast=10, brightness=55)
+cam.videoCapture()
 # warmup camera
 sleep(2.0)
 
 while True:
-	frame = cam_stream.current_frame
+	frame = cam.current_frame
 	if MODE == RECON_MODE:
 		''' RECON_MODE '''
 		#colorspace.updateHSV()
@@ -141,6 +142,6 @@ while True:
 
 wheels.move(MotorDriver.STOP)
 mobile_station.stop()
-cam_stream.close()
+cam.release()
 cv.destroyAllWindows()
 #colorspace.dumpSettings()
