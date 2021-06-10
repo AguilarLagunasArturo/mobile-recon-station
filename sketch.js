@@ -2,6 +2,13 @@
 var abs_pos_x, abs_pos_y, step, step_amt, abs_rot, rot, rot_amt, toggle;
 var rotating, translating;
 var view, V2D, V3D;
+var CAR_W, CAR_H, CAR_D;
+var OBJ_W, OBJ_H, OBJ_D;
+var FLOOR_W, FLOOR_H, FLOOR_D;
+
+function preload(){
+	rpi = loadModel('objetos/test.obj');
+}
 
 function setup() {
 	step = 0;
@@ -26,6 +33,18 @@ function setup() {
 		WEBGL
 	);
 	c.parent("canvas")
+
+	CAR_W = 45;
+	CAR_H = 30;
+	CAR_D = 80;
+
+	OBJ_W = width/4;
+	OBJ_H = 60;
+	OBJ_D = 20;
+
+	FLOOR_W = width;
+	FLOOR_H = 20;
+	FLOOR_D = height;
 }
 
 function draw() {
@@ -34,11 +53,17 @@ function draw() {
 	if (view == V2D){
 		rotateX(-HALF_PI);
 	} else if (view == V3D){
-		translate(0, 100, 0);
+		translate(0, 100, -500);
 	}
+
 	push();
-	translate(0, 40, 0);
-	box(width, 20, height);
+	translate(0, (CAR_H + FLOOR_H)/2, 0);
+	box(FLOOR_W, FLOOR_H, FLOOR_D);
+	pop();
+
+	push();
+	translate(0, - (OBJ_H - CAR_H)/2, -100);
+	box(OBJ_W, OBJ_H, OBJ_D);
 	pop();
 
 	translate(abs_pos_x, 0, abs_pos_y);
@@ -53,7 +78,8 @@ function draw() {
 	} else {
 		rotateY(abs_rot);
 	}
-	box(80, 50, 100);
+	//box(CAR_W, CAR_H, CAR_D);
+	model(rpi);
 }
 
 function keyPressed() {
