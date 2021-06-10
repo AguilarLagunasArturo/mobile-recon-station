@@ -7,7 +7,7 @@ var OBJ_W, OBJ_H, OBJ_D;
 var FLOOR_W, FLOOR_H, FLOOR_D;
 
 function preload(){
-	rpi = loadModel('objetos/pi.STL');
+	rpi = loadModel('objetos/deer.obj');
 }
 
 function setup() {
@@ -58,12 +58,12 @@ function draw() {
 
 	push();
 	translate(0, (CAR_H + FLOOR_H)/2, 0);
-	//box(FLOOR_W, FLOOR_H, FLOOR_D);
+	box(FLOOR_W, FLOOR_H, FLOOR_D);
 	pop();
 
 	push();
 	translate(0, - (OBJ_H - CAR_H)/2, -100);
-	//box(OBJ_W, OBJ_H, OBJ_D);
+	box(OBJ_W, OBJ_H, OBJ_D);
 	pop();
 
 	translate(abs_pos_x, 0, abs_pos_y);
