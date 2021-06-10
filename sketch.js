@@ -7,7 +7,7 @@ var OBJ_W, OBJ_H, OBJ_D;
 var FLOOR_W, FLOOR_H, FLOOR_D;
 
 function preload(){
-	rpi = loadModel('https://raw.githubusercontent.com/AguilarLagunasArturo/mobile-recon-station/gh-pages/objetos/deer.obj');
+	rpi = loadModel('objetos/pi.STL');
 }
 
 function setup() {
