@@ -7,7 +7,7 @@ var OBJ_W, OBJ_H, OBJ_D;
 var FLOOR_W, FLOOR_H, FLOOR_D;
 
 function preload(){
-	rpi = loadModel('objetos/deer.obj');
+	rpi = loadModel('pi.obj');
 }
 
 function setup() {
@@ -27,11 +27,19 @@ function setup() {
 	V3D = 1;
 	view = V3D;
 
+	/*
 	var c = createCanvas(
 		screen.availWidth * (1-0.2),
 		screen.availHeight * (1-0.2),
 		WEBGL
 	);
+	*/
+	var c = createCanvas(
+		800,
+		600,
+		WEBGL
+	);
+
 	c.parent("canvas")
 
 	CAR_W = 45;
@@ -53,7 +61,8 @@ function draw() {
 	if (view == V2D){
 		rotateX(-HALF_PI);
 	} else if (view == V3D){
-		translate(0, 100, -500);
+		//translate(0, 100, -500);
+		translate(0, 100, 0);
 	}
 
 	push();
@@ -79,6 +88,11 @@ function draw() {
 		rotateY(abs_rot);
 	}
 	//box(CAR_W, CAR_H, CAR_D);
+	translate(0, -90, 0);
+	//normalMaterial();
+	rotateZ(PI);
+	rotateY(PI);
+	scale(100);
 	model(rpi);
 }
 
