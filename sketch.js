@@ -92,7 +92,7 @@ function draw() {
 	//normalMaterial();
 	rotateZ(PI);
 	rotateY(PI);
-	scale(100);
+	// scale(2);
 	model(rpi);
 }
 
