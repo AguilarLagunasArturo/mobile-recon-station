@@ -7,7 +7,7 @@ var OBJ_W, OBJ_H, OBJ_D;
 var FLOOR_W, FLOOR_H, FLOOR_D;
 
 function preload(){
-	ch = loadModel('all-manual-center.stl');
+	ch = loadModel('all-minimal-rotated.stl');
 }
 
 function setup() {
@@ -63,13 +63,13 @@ function draw() {
 	if (view == V2D){
 		rotateX(-HALF_PI);
 	} else if (view == V3D){
-		//translate(0, 100, -500);
-		translate(0, 100, 0);
+		translate(0, 100, -500);
+		//translate(0, 100, 0);
 	}
 
 	push();
 	translate(0, (CAR_H + FLOOR_H)/2, 0);
-	box(FLOOR_W, FLOOR_H, FLOOR_D);
+	//box(FLOOR_W, FLOOR_H, FLOOR_D);
 	pop();
 
 	push();
@@ -89,10 +89,10 @@ function draw() {
 	} else {
 		rotateY(abs_rot);
 	}
-	//box(CAR_W, CAR_H, CAR_D);
+	box(CAR_W, CAR_H, CAR_D);
 	//normalMaterial();
-	translate(-45, 0, 0);
-	rotateX(HALF_PI);
+	//translate(-45, 0, 0);
+	//rotateX(HALF_PI);
 	model(ch);
 }
 
