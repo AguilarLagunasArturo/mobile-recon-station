@@ -46,11 +46,15 @@ function setup() {
 	FLOOR_W = width;
 	FLOOR_H = 20;
 	FLOOR_D = height;
+
+	noStroke();
 }
 
 function draw() {
 	//ortho();
 	background(100, 200, 200);
+	ambientLight(0, 0, 255);
+	pointLight(200, 0, 0, -100, -200, 0);
 
 	if (view == V2D){
 		rotateX(-HALF_PI);
@@ -84,7 +88,10 @@ function draw() {
 	//box(CAR_W, CAR_H, CAR_D);
 	rotateX(HALF_PI);
 	rotateZ(PI);
+	push();
+	specularMaterial(255);
 	model(c);
+	pop();
 }
 
 function keyPressed() {
