@@ -7,7 +7,7 @@ var OBJ_W, OBJ_H, OBJ_D;
 var FLOOR_W, FLOOR_H, FLOOR_D;
 
 function preload(){
-	rpi = loadModel('deer.obj', true);
+	ch = loadModel('all-manual-center.stl');
 }
 
 function setup() {
@@ -27,24 +27,26 @@ function setup() {
 	V3D = 1;
 	view = V3D;
 
-	/*
+
 	var c = createCanvas(
 		screen.availWidth * (1-0.2),
 		screen.availHeight * (1-0.2),
 		WEBGL
 	);
-	*/
+
+	/*
 	var c = createCanvas(
 		800,
 		600,
 		WEBGL
 	);
+	*/
 
 	c.parent("canvas")
 
-	CAR_W = 45;
+	CAR_W = 160;
 	CAR_H = 30;
-	CAR_D = 80;
+	CAR_D = 200;
 
 	OBJ_W = width/4;
 	OBJ_H = 60;
@@ -72,7 +74,7 @@ function draw() {
 
 	push();
 	translate(0, - (OBJ_H - CAR_H)/2, -100);
-	box(OBJ_W, OBJ_H, OBJ_D);
+	//box(OBJ_W, OBJ_H, OBJ_D);
 	pop();
 
 	translate(abs_pos_x, 0, abs_pos_y);
@@ -88,12 +90,10 @@ function draw() {
 		rotateY(abs_rot);
 	}
 	//box(CAR_W, CAR_H, CAR_D);
-	translate(0, -90, 0);
 	//normalMaterial();
-	rotateZ(PI);
-	rotateY(PI);
-	// scale(2);
-	model(rpi);
+	translate(-45, 0, 0);
+	rotateX(HALF_PI);
+	model(ch);
 }
 
 function keyPressed() {
