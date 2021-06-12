@@ -7,7 +7,7 @@ var OBJ_W, OBJ_H, OBJ_D;
 var FLOOR_W, FLOOR_H, FLOOR_D;
 
 function preload(){
-	ch = loadModel('all-minimal-rotated.stl');
+	c = loadModel('minimal-model.stl');
 }
 
 function setup() {
@@ -27,7 +27,6 @@ function setup() {
 	V3D = 1;
 	view = V3D;
 
-
 	var c = createCanvas(
 		screen.availWidth * (1-0.2),
 		screen.availHeight * (1-0.2),
@@ -44,8 +43,8 @@ function setup() {
 
 	c.parent("canvas")
 
-	CAR_W = 160;
-	CAR_H = 30;
+	CAR_W = 165;
+	CAR_H = 55;
 	CAR_D = 200;
 
 	OBJ_W = width/4;
@@ -58,18 +57,19 @@ function setup() {
 }
 
 function draw() {
+	//ortho();
 	background(100, 200, 200);
 
 	if (view == V2D){
 		rotateX(-HALF_PI);
 	} else if (view == V3D){
-		translate(0, 100, -500);
-		//translate(0, 100, 0);
+		//translate(0, 100, -500);
+		translate(0, 100, 0);
 	}
 
 	push();
 	translate(0, (CAR_H + FLOOR_H)/2, 0);
-	//box(FLOOR_W, FLOOR_H, FLOOR_D);
+	box(FLOOR_W, FLOOR_H, FLOOR_D);
 	pop();
 
 	push();
@@ -89,11 +89,11 @@ function draw() {
 	} else {
 		rotateY(abs_rot);
 	}
-	box(CAR_W, CAR_H, CAR_D);
+	//box(CAR_W, CAR_H, CAR_D);
 	//normalMaterial();
-	//translate(-45, 0, 0);
-	//rotateX(HALF_PI);
-	model(ch);
+	translate(-67.35, 0, -33.5);
+	rotateX(HALF_PI);
+	model(c);
 }
 
 function keyPressed() {
