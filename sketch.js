@@ -33,18 +33,10 @@ function setup() {
 		WEBGL
 	);
 
-	/*
-	var c = createCanvas(
-		800,
-		600,
-		WEBGL
-	);
-	*/
-
 	c.parent("canvas")
 
 	CAR_W = 165;
-	CAR_H = 55;
+	CAR_H = 75;
 	CAR_D = 200;
 
 	OBJ_W = width/4;
@@ -72,10 +64,10 @@ function draw() {
 	box(FLOOR_W, FLOOR_H, FLOOR_D);
 	pop();
 
-	push();
-	translate(0, - (OBJ_H - CAR_H)/2, -100);
+	//push();
+	//translate(0, - (OBJ_H - CAR_H)/2, -100);
 	//box(OBJ_W, OBJ_H, OBJ_D);
-	pop();
+	//pop();
 
 	translate(abs_pos_x, 0, abs_pos_y);
 	if (rotating) {
@@ -90,9 +82,8 @@ function draw() {
 		rotateY(abs_rot);
 	}
 	//box(CAR_W, CAR_H, CAR_D);
-	//normalMaterial();
-	translate(-67.35, 0, -33.5);
 	rotateX(HALF_PI);
+	rotateZ(PI);
 	model(c);
 }
 
