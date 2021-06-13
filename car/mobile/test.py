@@ -1,4 +1,6 @@
 import numpy as np
+from time import sleep
+from datetime import datetime
 
 def get_acc():
 	return np.array([np.random.rand(1)[0], np.random.rand(1)[0], np.random.rand(1)[0]])
@@ -27,12 +29,19 @@ a_off, w_off = calibrate(1000)
 print('a off', a_off)
 print('w off', w_off)
 
+sleep(0.1)
+t = 0.0
 while True:
+	dt = datetime.now().microsecond - t
+	t = t + dt
+
 	a = get_acc() - a_off
 	w = get_gyro() - w_off
+
+	print('dt\t', t)
 	print('acc\t', a)
 	print('gyro\t', w)
 	print()
 
 	with open('output.log', 'a') as f:
-		f.write('\n{},{}'.format(a, w))
+		f.write('\n{},{},{}'.format(t, a*dt*dt, w*dt))
