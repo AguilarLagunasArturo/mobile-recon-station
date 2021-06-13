@@ -4,7 +4,10 @@
 from cv_recon.picam import PiCam
 from cv_recon import Colorspace
 from cv_recon import cv_tools
+
 from mobile.MotorDriver import MotorDriver
+from mobile.MPU6050 import MPU6050
+
 from server.Station import Station
 from flask import Flask, render_template_string, Response
 import numpy as np
@@ -13,6 +16,7 @@ import threading
 
 from RPi import GPIO
 from time import sleep
+from time import time
 
 ''' Cnt '''
 HOST = Station.get_local_ip()
@@ -64,6 +68,31 @@ def start_flask():
 
 t_flask = threading.Thread(target=start_flask, args=())
 t_flask.start()
+
+''' MPU6050 '''
+def readMPU():
+	mpu = MPU6050()
+
+	a_off, w_off = mpu.calibrate(500)
+	t_off = time()
+	t = 0
+	dt = 0
+	print('[MPU] Started')
+	while True:
+		dt = time() - (t_off + t)
+		t = t + dt
+
+		a = mpu.get_acc() - a_off
+		w = mpu.get_gyro() - w_off
+
+		ax, ay, az = a
+		wx, wy, wz = w
+
+		with open('output.log', 'a') as f:
+			f.write('\n{},{},{},{},{},{},{},{}'.format(t, dt, ax, ay, az, wx, wy, wz))
+
+t_mpu = threading.Thread(target=readMPU, args=())
+t_mpu.start()
 
 ''' Raspberry stuff '''
 motor_pins = (11, 13, 15, 16) #r1, r2, l1, l2

@@ -51,14 +51,16 @@ class MPU6050:
 	PWR_MGMT_1 = 0x6B
 
 	def __init__(self, gyro_mode=0, acc_mode=0):
+		self.gyro_mode = gyro_mode
+		self.acc_mode = acc_mode
 		self.bus = smbus.SMBus(1)
-		self.bus.write_byte_data(MPU6050.ADRS, MPU6050.PWR_MGMT_1, 0x08)							# 0x08 -> TEMP OFF
-		self.bus.write_byte_data(MPU6050.ADRS, MPU6050.GYRO_CONF, MPU6050.GYRO_RANGES[gyro_mode])	# GYRO RANGE
-		self.bus.write_byte_data(MPU6050.ADRS, MPU6050.ACC_CONF, MPU6050.ACC_RANGES[acc_mode])		# GYRO ACC
+		self.bus.write_byte_data(MPU6050.ADRS, MPU6050.PWR_MGMT_1, 0x08)								# 0x08 -> TEMP OFF
+		self.bus.write_byte_data(MPU6050.ADRS, MPU6050.GYRO_CONF, MPU6050.GYRO_RANGES[self.gyro_mode])	# GYRO RANGE
+		self.bus.write_byte_data(MPU6050.ADRS, MPU6050.ACC_CONF, MPU6050.ACC_RANGES[self.acc_mode])		# GYRO ACC
 
 	def __read_address(self, address):
-		h = bus.read_byte_data(MPU6050.ADRS, address)
-		l = bus.read_byte_data(MPU6050.ADRS, address + 1)
+		h = self.bus.read_byte_data(MPU6050.ADRS, address)
+		l = self.bus.read_byte_data(MPU6050.ADRS, address + 1)
 		value = (h << 8) | l
 
 		# get signed value from mpu6050
@@ -74,9 +76,9 @@ class MPU6050:
 		gyro_y = self.__read_address(MPU6050.GYRO_Y)
 		gyro_z = self.__read_address(MPU6050.GYRO_Z)
 
-		gx = gyro_x/MPU6050.GYRO_SCALE[gyro_mode]
-		gy = gyro_y/MPU6050.GYRO_SCALE[gyro_mode]
-		gz = gyro_z/MPU6050.GYRO_SCALE[gyro_mode]
+		gx = gyro_x/MPU6050.GYRO_SCALE[self.gyro_mode]
+		gy = gyro_y/MPU6050.GYRO_SCALE[self.gyro_mode]
+		gz = gyro_z/MPU6050.GYRO_SCALE[self.gyro_mode]
 
 		return np.array([gx, gy, gz])
 
@@ -85,9 +87,9 @@ class MPU6050:
 		acc_y = self.__read_address(MPU6050.ACC_Y)
 		acc_z = self.__read_address(MPU6050.ACC_Z)
 
-		ax = acc_x/MPU6050.ACC_SCALE[acc_mode]
-		ay = acc_y/MPU6050.ACC_SCALE[acc_mode]
-		az = acc_z/MPU6050.ACC_SCALE[acc_mode]
+		ax = acc_x/MPU6050.ACC_SCALE[self.acc_mode]
+		ay = acc_y/MPU6050.ACC_SCALE[self.acc_mode]
+		az = acc_z/MPU6050.ACC_SCALE[self.acc_mode]
 
 		return np.array([ax, ay, az])
 
@@ -98,12 +100,12 @@ class MPU6050:
 			a = a + self.get_acc()
 			w = w + self.get_gyro()
 		return [a/iterations, w/iterations]
-
-# setup()
+'''
 mpu = MPU6050()
 
-a_off, w_off = mpu.calibrate(1000)
+a_off, w_off = mpu.calibrate(500)
 t = 0.0
+dt = 0
 while True:
 	dt = datetime.now().microsecond - t
 	t = t + dt
@@ -111,10 +113,9 @@ while True:
 	a = mpu.get_acc() - a_off
 	w = mpu.get_gyro() - w_off
 
-	print('t\t', t)
-	print('acc\t', a)
-	print('gyro\t', w)
-	print()
+	ax, ay, az = a
+	wx, wy, wz = w
 
 	with open('output.log', 'a') as f:
-		f.write('\n{},{}'.format(a**dt, w*dt))
+		f.write('\n{},{},{},{},{},{},{},{}'.format(t, dt, ax, ay, az, wx, wy, wz))
+'''
