@@ -81,7 +81,7 @@ def readMPU():
 	print('[MPU] Started')
 
 	today = datetime.now()
-	filename = '{}-{}-{}_{}-{}-{}.log'.format(today.day, today.month, today.year, today.hour, today.minute, today.second)
+	filename = '{}-{}-{}_{}-{}-{}.csv'.format(today.day, today.month, today.year, today.hour, today.minute, today.second)
 	while True:
 		dt = time() - (t_off + t)
 		t = t + dt
