@@ -17,6 +17,7 @@ import threading
 from RPi import GPIO
 from time import sleep
 from time import time
+from datetime import datetime
 
 ''' Cnt '''
 HOST = Station.get_local_ip()
@@ -78,6 +79,9 @@ def readMPU():
 	t = 0
 	dt = 0
 	print('[MPU] Started')
+
+	today = datetime.now()
+	filename = '{}-{}-{}_{}-{}-{}.log'.format(today.day, today.month, today.year, today.hour, today.minute, today.second)
 	while True:
 		dt = time() - (t_off + t)
 		t = t + dt
@@ -88,7 +92,7 @@ def readMPU():
 		ax, ay, az = a
 		wx, wy, wz = w
 
-		with open('output.log', 'a') as f:
+		with open(filename, 'a') as f:
 			f.write('\n{},{},{},{},{},{},{},{}'.format(t, dt, ax, ay, az, wx, wy, wz))
 
 t_mpu = threading.Thread(target=readMPU, args=())
