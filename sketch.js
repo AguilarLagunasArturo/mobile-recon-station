@@ -52,9 +52,11 @@ function setup() {
 
 function draw() {
 	//ortho();
-	background(100, 200, 200);
-	ambientLight(0, 0, 255);
-	pointLight(200, 0, 0, -100, -200, 0);
+	background(215, 227, 213);
+	ambientLight(171, 183, 196);
+	//pointLight(204, 96, 96, 0, 500, 0);
+	pointLight(32, 32, 32, 0, -500, 0);
+
 
 	if (view == V2D){
 		rotateX(-HALF_PI);
@@ -89,9 +91,12 @@ function draw() {
 	rotateX(HALF_PI);
 	rotateZ(PI);
 	push();
-	specularMaterial(255);
+	specularMaterial(250, 250, 250);
+	fill(196, 207, 206);
 	model(c);
 	pop();
+
+
 }
 
 function keyPressed() {
