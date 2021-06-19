@@ -81,7 +81,7 @@ def readMPU():
 	print('[MPU] Started')
 
 	today = datetime.now()
-	filename = '{}-{}-{}_{}-{}-{}.csv'.format(today.day, today.month, today.year, today.hour, today.minute, today.second)
+	filename = 'data/{}-{}-{}_{}-{}-{}.csv'.format(today.day, today.month, today.year, today.hour, today.minute, today.second)
 	while True:
 		dt = time() - (t_off + t)
 		t = t + dt
@@ -93,7 +93,7 @@ def readMPU():
 		wx, wy, wz = w
 
 		with open(filename, 'a') as f:
-			f.write('\n{},{},{},{},{},{},{},{}'.format(t, dt, ax, ay, az, wx, wy, wz))
+			f.write('{},{},{},{},{},{},{},{}\n'.format(t, dt, ax, ay, az, wx, wy, wz))
 
 t_mpu = threading.Thread(target=readMPU, args=())
 t_mpu.start()
