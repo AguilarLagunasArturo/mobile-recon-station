@@ -1,4 +1,4 @@
-// global vars
+// global variables
 var abs_pos_x, abs_pos_y, step, step_amt, abs_rot, rot, rot_amt, toggle;
 var rotating, translating;
 var view, V2D, V3D;
@@ -7,6 +7,7 @@ var OBJ_W, OBJ_H, OBJ_D;
 var FLOOR_W, FLOOR_H, FLOOR_D;
 
 function preload(){
+	// load model
 	c = loadModel('minimal-model.stl');
 }
 
@@ -44,25 +45,26 @@ function setup() {
 	OBJ_D = 20;
 
 	FLOOR_W = width;
-	FLOOR_H = 20;
+	FLOOR_H = 120;
 	FLOOR_D = height;
 
 	noStroke();
+	fill(180, 180, 180);
 }
 
 function draw() {
 	//ortho();
-	background(215, 227, 213);
-	ambientLight(171, 183, 196);
-	//pointLight(204, 96, 96, 0, 500, 0);
-	pointLight(32, 32, 32, 0, -500, 0);
+	background(255, 255, 255);
+	ambientLight(207, 219, 243);
+	pointLight(200, 200, 200, 0, -600, 0);
+	//pointLight(100, 170, 215, 0, 500, 0);
 
 
 	if (view == V2D){
 		rotateX(-HALF_PI);
 	} else if (view == V3D){
 		//translate(0, 100, -500);
-		translate(0, 100, 0);
+		translate(0, 60, 0);
 	}
 
 	push();
@@ -91,8 +93,11 @@ function draw() {
 	rotateX(HALF_PI);
 	rotateZ(PI);
 	push();
-	specularMaterial(250, 250, 250);
-	fill(196, 207, 206);
+	specularMaterial(255);
+	fill(200, 200, 200);
+	stroke(80, 80, 80);
+	//stroke(32);
+	strokeWeight(0.4);
 	model(c);
 	pop();
 
