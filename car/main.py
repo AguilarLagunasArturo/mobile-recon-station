@@ -95,8 +95,22 @@ def readMPU():
 		with open(filename, 'a') as f:
 			f.write('{},{},{},{},{},{},{},{}\n'.format(t, dt, ax, ay, az, wx, wy, wz))
 
-t_mpu = threading.Thread(target=readMPU, args=())
-t_mpu.start()
+#t_mpu = threading.Thread(target=readMPU, args=())
+#t_mpu.start()
+
+''' Listen for mode '''
+MANUAL_MODE = 5
+RECON_MODE = 6
+GYRO_ON = 7
+GYRO_OFF = 8
+
+current_mode = MANUAL_MODE
+
+def listenMode():
+	global current_mode
+	while true:
+		if mobile_station.current_state > 4:
+			current_mode = mobile_station.current_state
 
 ''' Raspberry stuff '''
 motor_pins = (11, 13, 15, 16) #r1, r2, l1, l2
@@ -108,20 +122,14 @@ wheels = MotorDriver(motor_pins)
 
 ''' Recon stuff '''
 x_th = 0.5
-MANUAL_MODE = 0
-RECON_MODE = 1
-
-MODE = MANUAL_MODE
-#MODE = RECON_MODE
 
 ''' Cam stuff '''
 res = (320, 240)
 fps = 24
 
-if MODE == RECON_MODE:
-	# color recon obj
-	colorspace = Colorspace('last.log')
-	#colorspace.createSliders()
+# color recon obj
+colorspace = Colorspace('last.log')
+#colorspace.createSliders()
 
 # initialize the camera
 cam = PiCam(res, fps, contrast=10, brightness=55)
@@ -131,13 +139,13 @@ sleep(2.0)
 
 while True:
 	frame = cam.current_frame
-	if MODE == RECON_MODE:
+	if current_mode == RECON_MODE:
 		''' RECON_MODE '''
 		#colorspace.updateHSV()
 		frame_blur = cv.GaussianBlur(frame, (9, 9), 150)                # smoothes the noise
 		frame_hsv = cv.cvtColor(frame_blur, cv.COLOR_BGR2HSV)           # convert BGR to HSV
 
-		boxes = colorspace.getMaskBoxes(frame, frame_hsv, 150)  # get boxes (x, y, w, h)
+		boxes = colorspace.getMaskBoxes(frame, frame_hsv, 150)  		# get boxes (x, y, w, h)
 
 		offsets = cv_tools.getBoxesOffset(frame, boxes)                 # get boxes offset from the center of the frame
 		if len(offsets) == 1:
@@ -156,6 +164,8 @@ while True:
 		frame_out = cv_tools.drawBoxes(frame.copy(), boxes)     # draw boxe
 		frame_out = cv_tools.drawBoxesPos(frame_out, boxes)     # draw offsets
 
+		# frame = frame_out
+
 		frame_grid = cv_tools.grid(frame, (2, 3),[              # generate grid
 			frame_hsv, frame_out, colorspace.im_contours,
 			colorspace.im_cut, colorspace.im_mask, colorspace.im_edges], 0.8)
@@ -164,13 +174,12 @@ while True:
 
 		if cv.waitKey(1) & 0xFF == ord("q"):
 			break
-	elif MODE == MANUAL_MODE:
+	elif current_mode == MANUAL_MODE:
 		''' MANUAL_MODE '''
 		cs = mobile_station.current_state
 		if cs >= 0 and cs <= 4:
 			wheels.move(cs)
-		# TODO:
-		# - CONTROL DIR FROM WIFI OR BT
+
 	update = True
 
 wheels.move(MotorDriver.STOP)
