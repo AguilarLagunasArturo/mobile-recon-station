@@ -1,5 +1,10 @@
 # Simulation
 
+### Launch
+```python
+python3 http.server 8000
+```
+
 | Key | Movement |
 | :- | :- |
 | Key up | Forward |
@@ -7,4 +12,4 @@
 | Key right | Rotate right |
 | Key left | Rotate left |
 
-![preview](preview.png)
+![preview](https://raw.githubusercontent.com/AguilarLagunasArturo/mobile-recon-station/gh-pages/preview.png)
