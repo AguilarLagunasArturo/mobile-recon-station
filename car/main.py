@@ -71,7 +71,10 @@ t_flask = threading.Thread(target=start_flask, args=())
 t_flask.start()
 
 ''' MPU6050 '''
+writing = False
 def readMPU():
+	global writing
+
 	mpu = MPU6050()
 
 	a_off, w_off = mpu.calibrate(500)
@@ -82,7 +85,7 @@ def readMPU():
 
 	today = datetime.now()
 	filename = 'data/{}-{}-{}_{}-{}-{}.csv'.format(today.day, today.month, today.year, today.hour, today.minute, today.second)
-	while True:
+	while writing:
 		dt = time() - (t_off + t)
 		t = t + dt
 
@@ -93,10 +96,15 @@ def readMPU():
 		wx, wy, wz = w
 
 		with open(filename, 'a') as f:
-			f.write('{},{},{},{},{},{},{},{}\n'.format(t, dt, ax, ay, az, wx, wy, wz))
+			#f.write('{},{},{},{},{},{},{},{}\n'.format(t, dt, ax, ay, az, wx, wy, wz))
+			if mobile_station.current_state == MotorDriver.FORWARD:
+				f.write('{},{},{},{}\n'.format(t, dt, 1, wz))
+			elif mobile_station.current_state == MotorDriver.BACKWARD:
+				f.write('{},{},{},{}\n'.format(t, dt, -1, wz))
+			else:
+				f.write('{},{},{},{}\n'.format(t, dt, 0, wz))
 
-#t_mpu = threading.Thread(target=readMPU, args=())
-#t_mpu.start()
+	print('[MPU] Stoped')
 
 ''' Listen for mode '''
 MANUAL_MODE = 5
@@ -108,9 +116,21 @@ current_mode = MANUAL_MODE
 
 def listenMode():
 	global current_mode
-	while true:
+	global writing
+	while True:
+		sleep(1)
 		if mobile_station.current_state > 4:
 			current_mode = mobile_station.current_state
+			print('Mode: {}'.format(current_mode))
+			if current_mode == 7 and not writing:
+				writing = True
+				t_mpu = threading.Thread(target=readMPU, args=())
+				t_mpu.start()
+			elif current_mode == 8 and writing:
+				writing = False
+
+t_mode = threading.Thread(target=listenMode, args=())
+t_mode.start()
 
 ''' Raspberry stuff '''
 motor_pins = (11, 13, 15, 16) #r1, r2, l1, l2
@@ -139,15 +159,17 @@ sleep(2.0)
 
 while True:
 	frame = cam.current_frame
+	frame_aux = frame.copy()
 	if current_mode == RECON_MODE:
+		update = False
 		''' RECON_MODE '''
 		#colorspace.updateHSV()
-		frame_blur = cv.GaussianBlur(frame, (9, 9), 150)                # smoothes the noise
+		frame_blur = cv.GaussianBlur(frame_aux, (9, 9), 150)                # smoothes the noise
 		frame_hsv = cv.cvtColor(frame_blur, cv.COLOR_BGR2HSV)           # convert BGR to HSV
 
-		boxes = colorspace.getMaskBoxes(frame, frame_hsv, 150)  		# get boxes (x, y, w, h)
+		boxes = colorspace.getMaskBoxes(frame_aux, frame_hsv, 150)  		# get boxes (x, y, w, h)
 
-		offsets = cv_tools.getBoxesOffset(frame, boxes)                 # get boxes offset from the center of the frame
+		offsets = cv_tools.getBoxesOffset(frame_aux, boxes)                 # get boxes offset from the center of the frame
 		if len(offsets) == 1:
 			if offsets[0][0] < -x_th:
 				wheels.move(MotorDriver.RIGHT)
@@ -157,23 +179,21 @@ while True:
 				wheels.move(MotorDriver.STOP)
 		else:
 			wheels.move(MotorDriver.STOP)
+
 		# Print data
 		#for i, offset in enumerate(offsets):
 		#       print(i, offset)                                    # print offset (x_off, y_off)
 
-		frame_out = cv_tools.drawBoxes(frame.copy(), boxes)     # draw boxe
-		frame_out = cv_tools.drawBoxesPos(frame_out, boxes)     # draw offsets
+		#frame_out = cv_tools.drawBoxes(frame_aux, boxes)     # draw boxe
+		#frame_out = cv_tools.drawBoxesPos(frame_out, boxes)     # draw offsets
+		#frame = frame_out
 
-		# frame = frame_out
+		#frame_grid = cv_tools.grid(frame_aux, (1, 1),[ frame_out ], 0.8)
 
-		frame_grid = cv_tools.grid(frame, (2, 3),[              # generate grid
-			frame_hsv, frame_out, colorspace.im_contours,
-			colorspace.im_cut, colorspace.im_mask, colorspace.im_edges], 0.8)
+		#cv.imshow('grid', frame_grid)                           # show grid
 
-		cv.imshow('grid', frame_grid)                           # show grid
-
-		if cv.waitKey(1) & 0xFF == ord("q"):
-			break
+		#if cv.waitKey(1) & 0xFF == ord("q"):
+		#	break
 	elif current_mode == MANUAL_MODE:
 		''' MANUAL_MODE '''
 		cs = mobile_station.current_state

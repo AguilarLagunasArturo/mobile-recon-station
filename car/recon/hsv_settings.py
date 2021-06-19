@@ -1,5 +1,5 @@
 # import the necessary packages
-from cv_recon.picam import PiCamStream
+from cv_recon.picam import PiCam
 from cv_recon import Colorspace
 from cv_recon import cv_tools
 from time import sleep
@@ -10,8 +10,8 @@ res = (320, 240)
 fps = 32
 
 # initialize the camera
-cam_stream = PiCamStream(res, fps)
-cam_stream.start()
+cam_stream = PiCam(res, fps, contrast=10, brightness=55)
+cam_stream.videoCapture()
 
 colorspace = Colorspace()
 colorspace.createSliders()
@@ -44,6 +44,6 @@ while True:
 	if cv.waitKey(1) & 0xFF == ord("q"):
 		break
 
-cam_stream.close()
+cam_stream.release()
 cv.destroyAllWindows()
 colorspace.dumpSettings()
