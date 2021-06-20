@@ -148,7 +148,7 @@ res = (320, 240)
 fps = 24
 
 # color recon obj
-colorspace = Colorspace('last.log')
+colorspace = Colorspace('blue.log')
 #colorspace.createSliders()
 
 # initialize the camera
@@ -167,7 +167,7 @@ while True:
 		frame_blur = cv.GaussianBlur(frame_aux, (9, 9), 150)                # smoothes the noise
 		frame_hsv = cv.cvtColor(frame_blur, cv.COLOR_BGR2HSV)           # convert BGR to HSV
 
-		boxes = colorspace.getMaskBoxes(frame_aux, frame_hsv, 150)  		# get boxes (x, y, w, h)
+		boxes, area = colorspace.getMaskBoxesArea(frame_aux, frame_hsv, 150)  		# get boxes (x, y, w, h)
 
 		offsets = cv_tools.getBoxesOffset(frame_aux, boxes)                 # get boxes offset from the center of the frame
 		if len(offsets) == 1:
@@ -176,7 +176,13 @@ while True:
 			elif offsets[0][0] > x_th:
 				wheels.move(MotorDriver.LEFT)
 			else:
-				wheels.move(MotorDriver.STOP)
+				if area:
+					print(area[0])
+					if area[0] < 2000:
+						wheels.move(MotorDriver.FORWARD)
+				else:
+					wheels.move(MotorDriver.STOP)
+
 		else:
 			wheels.move(MotorDriver.STOP)
 
@@ -190,7 +196,7 @@ while True:
 
 		#frame_grid = cv_tools.grid(frame_aux, (1, 1),[ frame_out ], 0.8)
 
-		#cv.imshow('grid', frame_grid)                           # show grid
+		#cv.imshow('grid', frame_out)                           # show grid
 
 		#if cv.waitKey(1) & 0xFF == ord("q"):
 		#	break
