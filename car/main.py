@@ -148,7 +148,7 @@ res = (320, 240)
 fps = 24
 
 # color recon obj
-colorspace = Colorspace('blue.log')
+colorspace = Colorspace('recon/blue.log')
 #colorspace.createSliders()
 
 # initialize the camera
