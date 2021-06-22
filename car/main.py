@@ -7,6 +7,7 @@ from cv_recon import cv_tools
 
 from mobile.MotorDriver import MotorDriver
 from mobile.MPU6050 import MPU6050
+from mobile.UltrasonicSensor import UltrasonicSensor
 
 from server.Station import Station
 from flask import Flask, render_template_string, Response
@@ -69,6 +70,25 @@ def start_flask():
 
 t_flask = threading.Thread(target=start_flask, args=())
 t_flask.start()
+
+'''Ultrasonic Sensor '''
+us = UltrasonicSensor()
+too_close = False
+
+def updateDistance():
+	global too_close
+	while True:
+		sleep(0.2)
+		d = us.getDistance()
+		if d <= 15:
+			print(d)
+			too_close = True
+		else:
+			too_close = False
+
+print('[Ultrasonic] Started')
+t_ultrasonic = threading.Thread(target=updateDistance, args=())
+t_ultrasonic.start()
 
 ''' MPU6050 '''
 writing = False
@@ -163,7 +183,6 @@ while True:
 	if current_mode == RECON_MODE:
 		update = False
 		''' RECON_MODE '''
-		#colorspace.updateHSV()
 		frame_blur = cv.GaussianBlur(frame_aux, (9, 9), 150)                # smoothes the noise
 		frame_hsv = cv.cvtColor(frame_blur, cv.COLOR_BGR2HSV)           # convert BGR to HSV
 
@@ -201,7 +220,14 @@ while True:
 		#if cv.waitKey(1) & 0xFF == ord("q"):
 		#	break
 	elif current_mode == MANUAL_MODE:
+		update = False
 		''' MANUAL_MODE '''
+		if too_close:
+			print('Pa-tras')
+			wheels.move(MotorDriver.BACKWARD)
+			sleep(0.5)
+			wheels.move(MotorDriver.STOP)
+
 		cs = mobile_station.current_state
 		if cs >= 0 and cs <= 4:
 			wheels.move(cs)
