@@ -3,7 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
-
+from matplotlib.animation import FuncAnimation
+from itertools import count
+from time import sleep
+import threading
 import random
 
 if len(sys.argv) < 2:
@@ -34,7 +37,36 @@ sy = dt * dir * np.sin(theta * np.pi/180)
 sy = np.cumsum(sy)
 sz = [ np.sin(x * 1/120) for x in range( len(sy) )]
 
+sx_data = []
+sy_data = []
+sz_data = []
+
 ax = plt.figure().add_subplot(projection='3d')
-ax.plot(sx, sy, sz)
-ax.axes.set_zlim3d(bottom=-15, top=15)
+
+c = count()
+
+def updateData():
+	global sx_data, sy_data, sz_data, t, c
+	while True:
+		i = next(c)
+		sleep(0.005)
+		sx_data.append(sx[i])
+		sy_data.append(sy[i])
+		sz_data.append(0)
+		if i == len(t) - 2:
+			break
+t_data = threading.Thread(target=updateData, args=())
+t_data.start()
+
+def animate(i):
+	global sx_data, sy_data, sz_data
+	ax.cla()
+	ax.plot(sx_data, sy_data, sz_data)
+	ax.axes.set_zlim3d(bottom=-15, top=15)
+
+ani = FuncAnimation(plt.gcf(), animate, interval=0.5)
 plt.show()
+
+#for k in range(len(dt)):
+	#print(k)
+	#animate(k)
