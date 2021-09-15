@@ -1,5 +1,5 @@
 # Mobile Recon Station
-An average car using a Raspberry PI 3B+
+An average car you can control thru a local web server to map plane surface or detect and follow colors in autonomous mode. See the simulation [here](https://aguilarlagunasarturo.github.io/mobile-recon-station/).
 
 # Features
 ### Wireless control
@@ -12,7 +12,7 @@ An average car using a Raspberry PI 3B+
 ![mapping](preview/mapping.gif)
 # Hardware
 - *1* Raspberry PI 3B+
-- *1* Raspberry PI Camera module (*V1.2*)
+- *1* Raspberry PI Camera module
 - *4* 5V Motoreductor and wheels
 - *1* Chasis
 - *1* L298N
@@ -21,17 +21,17 @@ An average car using a Raspberry PI 3B+
 - *4* AA Batteries
 
 # Circuit
-
+![color-detection](preview/electronic-circuit.jpg)
 # Software dependencies
 | Name | Installation |
 | :------------- | :------------- |
 | Phyton3 | [Official website](2) |
 | OpenCV >= 4.5.2 | [Official guide](1) |
-| numpy | pip install numpy |
-| cv_recon | pip install cv-recon |
-| flask | pip install Flask |
-| smbus | sudo apt install python3-smbus |
-| matplotlib >= 3.3.4 | pip install matplotlib |
+| numpy | `pip install numpy` |
+| cv_recon | `pip install cv-recon` |
+| flask | `pip install Flask` |
+| smbus | `sudo apt install python3-smbus` |
+| matplotlib >= 3.3.4 | `pip install matplotlib` |
 
 # Usage
 1. Install dependencies
