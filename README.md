@@ -20,7 +20,7 @@ An average car you can control thru a local web server to map plane surface or d
 - *1* Powerbank 2A +5V
 - *4* AA Batteries
 
-# Circuit
+# Electronic circuit
 ![color-detection](preview/electronic-circuit.jpg)
 # Software dependencies
 | Name | Installation |
