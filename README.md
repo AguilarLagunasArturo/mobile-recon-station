@@ -2,14 +2,13 @@
 Using a Raspberry PI 3B+.
 
 # Features
-- Wireless control
-    - Local web server
-- Color detection
-    - Color calibration
-- Mapping
+### Wireless control
+### Color detection
+### Color calibration
+### Mapping
 
 # Preview
-![calibration](src/videos/calibrar.mp4)
+![calibration](preview/calibration.gif)
 # Hardware
 - *1* Raspberry PI 3B+
 - *1* Raspberry PI Camera module (*V1.2*)
