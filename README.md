@@ -1,14 +1,15 @@
 # Mobile Recon Station
-Using a Raspberry PI 3B+.
+An average car using a Raspberry PI 3B+
 
 # Features
 ### Wireless control
-### Color detection
+![wireless-control](preview/manual-control.gif)
 ### Color calibration
-### Mapping
-
-# Preview
 ![calibration](preview/calibration.gif)
+### Color detection
+![color-detection](preview/color-detection.gif)
+### Mapping
+![mapping](preview/mapping.gif)
 # Hardware
 - *1* Raspberry PI 3B+
 - *1* Raspberry PI Camera module (*V1.2*)
@@ -17,6 +18,7 @@ Using a Raspberry PI 3B+.
 - *1* L298N
 - *1* MPU6050
 - *1* Powerbank 2A +5V
+- *4* AA Batteries
 
 # Circuit
 
@@ -34,9 +36,9 @@ Using a Raspberry PI 3B+.
 # Usage
 1. Install dependencies
 2. Enable Raspberry PI Camera
-3. Clone repo into `$HOME/Github`
+3. Clone repo into `$HOME/Github/`
 4. Run `car/systemd_service/ln_to_system.sh` to add startup rutine
-5. Run  `car/systemd_service/enable.sh to` enable startup rutine
+5. Run  `car/systemd_service/enable.sh` to enable startup rutine
 6. Reboot
 7. Access Raspberry PI local IP from a web browser to control it
 
