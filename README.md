@@ -1,5 +1,5 @@
 # Mobile Recon Station
-An average car you can control thru a local web server to map plane surface or detect and follow colors in autonomous mode. See the simulation [here](https://aguilarlagunasarturo.github.io/mobile-recon-station/).
+A car you can control thru a local web server to map a plane surface or detect and follow colors in autonomous mode. See the simulation [here](https://aguilarlagunasarturo.github.io/mobile-recon-station/).
 
 # Features
 ### Wireless control
