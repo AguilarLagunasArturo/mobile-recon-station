@@ -10,7 +10,7 @@ A simple car you can control thru a local web server to map a plane surface or d
 ![color-detection](preview/color-detection.gif)
 ### Mapping
 ![mapping](preview/mapping.gif)
-# Hardware
+## Hardware
 - *1* Raspberry PI 3B+
 - *1* Raspberry PI Camera module
 - *4* 5V Motoreductors
