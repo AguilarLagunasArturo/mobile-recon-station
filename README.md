@@ -1,7 +1,7 @@
 # Mobile Recon Station
 A simple car you can control thru a local web server to map a plane surface or detect and follow colors in autonomous mode. See the simulation [here](https://aguilarlagunasarturo.github.io/mobile-recon-station/).
 
-# Features
+## Features
 ### Wireless control
 ![wireless-control](preview/manual-control.gif)
 ### Color calibration
@@ -21,9 +21,9 @@ A simple car you can control thru a local web server to map a plane surface or d
 - *1* Powerbank 2A +5V
 - *4* AA Batteries
 
-# Electronic circuit
+## Electronic circuit
 ![color-detection](preview/electronic-circuit.jpg)
-# Software dependencies
+## Software dependencies
 | Name | Installation |
 | :------------- | :------------- |
 | Phyton3 | [Official website](2) |
@@ -34,7 +34,7 @@ A simple car you can control thru a local web server to map a plane surface or d
 | smbus | `sudo apt install python3-smbus` |
 | matplotlib >= 3.3.4 | `pip install matplotlib` |
 
-# Usage
+## Usage
 1. Install dependencies
 2. Enable Raspberry PI Camera
 3. Clone repo into `$HOME/Github/`
