@@ -18,7 +18,7 @@ A simple car you can control thru a local web server to map a plane surface or d
 - *1* Chasis
 - *1* L298N
 - *1* MPU6050
-- *1* Powerbank 2A +5V
+- *1* Powerbank 2A 5V
 - *4* AA Batteries
 
 ## Electronic circuit
