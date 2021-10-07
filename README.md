@@ -13,7 +13,7 @@ A simple car you can control thru a local web server to map a plane surface or d
 ## Hardware
 - *1* Raspberry PI 3B+
 - *1* Raspberry PI Camera module
-- *4* 5V Motoreductors
+- *4* Gear motor 5V DC
 - *4* Wheels
 - *1* Chasis
 - *1* L298N
